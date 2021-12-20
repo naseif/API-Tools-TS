@@ -181,8 +181,8 @@ export class APIController {
      * This parameter is optional. use startServer("true") || startServer("false") to enable or disable the default middlewares
      */
 
-    startServer(applyDefaultMiddleWares?: 'true' | 'false') {
-        if (applyDefaultMiddleWares && applyDefaultMiddleWares === 'true') {
+    startServer(applyDefaultMiddleWares?: { useDefaultMiddlewares: 'true' | 'false' }) {
+        if (applyDefaultMiddleWares && applyDefaultMiddleWares.useDefaultMiddlewares === 'true') {
             this.CreateMainEndPoint();
         } else {
             this.RegisterAllMiddleWares();
