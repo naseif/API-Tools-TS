@@ -48,7 +48,7 @@ api.AddEndPoint("/:random", "get", (req, res) => {
   res.status(200).json({ test: Math.round(Math.random() * Number(random)) });
 });
 
-api.startServer("true"); // to apply default middlewares ["cors", "morgan", "helmet"]
+api.startServer({useDefaultMiddlewares: 'true'}); // to apply default middlewares ["cors", "morgan", "helmet"]
 ```
 
 ### Add multiple methods to single endpoint
