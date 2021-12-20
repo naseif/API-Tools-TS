@@ -1,10 +1,14 @@
 {
   "name": "api-tools-ts",
-  "version": "1.2.1",
-  "description": "A useful package to create APIs on the fly ",
+  "version": "1.2.3",
+  "description": "A light-weight library to help you create APIs on the fly using express.js written in TypeScript",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "build": "tsc",
+    "build:docs": "npx typedoc src/index.ts",
+    "publish:check": "tsc --build --clean && tsc --build --verbose",
+    "publish": "npm publish"
   },
   "author": "naseif",
   "license": "MIT",
