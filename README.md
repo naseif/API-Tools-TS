@@ -1,20 +1,22 @@
 # API-Tools-TS
 
 A light-weight library to help you create APIs on the fly using express.js written in TypeScript.
+<br>
 
-# Motivation
+## Motivation
 
 Creating RESTful APIs is not always the easiest, especially when you have a lot of endpoints and functions for each of this endpoints. API-Tools-TS (the name will be changed LOL) provides an easy way to deal with express.js for beginners in more structured way.
+<br>
 
-# Installation
+## Installation
 
 ```
 npm i api-tools-ts
 ```
 
-# Importing
+## Importing
 
-## TypeScript
+### TypeScript
 
 ```ts
 import { APIController } from "api-tools-ts";
@@ -22,14 +24,14 @@ import { APIController } from "api-tools-ts";
 const api = new APIController(endpoint); // the main endpoint for the api you wish to create
 ```
 
-## JavaScript
+### JavaScript
 
 ```js
 const { APIController } = require("api-tools-ts");
 const api = new APIController(endpoint); // the main endpoint for the api you wish to create
 ```
 
-# Example
+## Example
 
 ```ts
 import { APIController } from "api-tools-ts";
