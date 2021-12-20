@@ -1,6 +1,6 @@
 {
   "name": "api-tools-ts",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A light-weight library to help you create APIs on the fly using express.js written in TypeScript",
   "main": "dist/index.js",
   "scripts": {
