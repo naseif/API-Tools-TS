@@ -65,6 +65,7 @@ export class APIController {
         this.MiddleWares.set('helmet', helmet());
         this.MiddleWares.set('cors', cors());
         this.app.use(express.json());
+        this.RegisterAllMiddleWares();
         this.app.use(this.mainEndPoint, this.router);
     }
 
@@ -183,7 +184,6 @@ export class APIController {
     startServer(applyDefaultMiddleWares?: 'true' | 'false') {
         if (applyDefaultMiddleWares && applyDefaultMiddleWares === 'true') {
             this.CreateMainEndPoint();
-            this.RegisterAllMiddleWares();
         } else {
             this.RegisterAllMiddleWares();
             this.app.use(express.json());
