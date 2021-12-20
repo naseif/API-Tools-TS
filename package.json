@@ -1,8 +1,9 @@
 {
   "name": "api-tools-ts",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "A light-weight library to help you create APIs on the fly using express.js written in TypeScript",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "build": "tsc",
@@ -11,6 +12,14 @@
   },
   "author": "naseif",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naseif/API-Tools-TS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naseif/API-Tools-TS/issues"
+  },
+  "homepage": "https://github.com/naseif/API-Tools-TS#readme",
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
