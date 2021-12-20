@@ -1,6 +1,6 @@
 {
   "name": "api-tools-ts",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A light-weight library to help you create APIs on the fly using express.js written in TypeScript",
   "main": "dist/index.js",
   "scripts": {
@@ -17,7 +17,6 @@
     "@types/express": "^4.17.13",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.11.14",
-    "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "tslint": "^6.1.3",
     "typescript": "^4.5.4"
@@ -25,7 +24,6 @@
   "dependencies": {
     "@types/helmet": "^4.0.0",
     "cors": "^2.8.5",
-    "devtools-ts": "^1.1.2",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "morgan": "^1.10.0"
