@@ -11,10 +11,17 @@ export class APIController {
     protected mainEndPoint: string;
 
     /**
+     * The API Server PORT. Default: 51337
+     */
+
+    public port: number
+
+    /**
      * A map containing all endpoints of this API
      */
 
     endpoints: any;
+
     /**
      * Express Object
      */
@@ -28,15 +35,16 @@ export class APIController {
     private router: any;
 
     /**
-     * Initialzes the APIController Class
-     * @param {string} endpoint
-     */
-
-    /**
      * A Map containing all used middlewares for this API
      */
 
     public MiddleWares: any;
+
+
+    /**
+     * Initialzes the APIController Class
+     * @param {string} endpoint
+     */
 
     constructor(endpoint: string) {
         if (!endpoint) throw new Error('APIController can not be initialized without a main endoint!');
@@ -45,6 +53,7 @@ export class APIController {
         this.app = express();
         this.router = express.Router();
         this.MiddleWares = new Map();
+        this.port = 51337
     }
 
     /**
@@ -108,7 +117,7 @@ export class APIController {
      *  }
      *
      * const postUser = (req, res) => {
-     *    res.status.(200).json(method: "POST")
+     *    res.status(200).json({method: "POST"})
      * }
      *
      * api.AddMultipleMethods("/random", ["get", "post"], [getUsers, postUser]) // now the random endpoint will have the post and get methods and each has its own callback function
@@ -180,9 +189,8 @@ export class APIController {
             this.app.use(express.json());
             this.app.use(this.mainEndPoint, this.router);
         }
-        const port = process.env.PORT || 3000;
-        this.app.listen(port, () => {
-            console.log(`API is running on https://localhost:${port}${this.mainEndPoint}`);
+        this.app.listen(this.port, () => {
+            console.log(`API is running on https://localhost:${this.port}${this.mainEndPoint}`);
         });
     }
 }
