@@ -7,8 +7,7 @@
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "build": "tsc",
     "build:docs": "npx typedoc src/index.ts",
-    "publish:check": "tsc --build --clean && tsc --build --verbose",
-    "publish": "npm publish"
+    "publish:check": "tsc --build --clean && tsc --build --verbose"
   },
   "author": "naseif",
   "license": "MIT",
