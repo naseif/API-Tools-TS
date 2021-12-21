@@ -3,11 +3,33 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 
-type HTTPMethods = 'get' | 'post' | 'put' | 'delete' | 'patch'
-type EndpointCallback = (req: Request, res: Response) => void
-type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void
-type ParameterCallback = (req: Request, res: Response, next: NextFunction, value: number | string) => void
-type DefaultMiddlewares = "true" | "false"
+/**
+ * The HTTP Methods for the AddEndPoint() method
+ */
+export type HTTPMethods = 'get' | 'post' | 'put' | 'delete' | 'patch'
+
+/**
+ * The default callback function for an endpoint
+ */
+
+export type EndpointCallback = (req: Request, res: Response) => void
+
+/**
+ * The Middleware callback function for creating a middleware
+ */
+export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void
+
+/**
+ * The param callback function for AddParamChecker()
+ */
+
+export type ParameterCallback = (req: Request, res: Response, next: NextFunction, value: number | string) => void
+
+/**
+ * Whether to apply default middlewares or not type
+ */
+
+export type DefaultMiddlewares = "true" | "false"
 
 
 export class APIController {
