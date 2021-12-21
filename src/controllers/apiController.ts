@@ -131,6 +131,9 @@ export class APIController {
     AddMultipleMethods(endpoint: string, method: string[], callback: any[]) {
         this.endpoints.set(endpoint, callback);
         method.forEach((method, index) => {
+            if (typeof method !== "string" && Array.isArray(method)) {
+                this.AddMultipleMethods(endpoint, method, callback)
+            }
             const f = callback[index];
             this.router.route(endpoint)[method](f);
         });
