@@ -6,31 +6,30 @@ import cors from 'cors';
 /**
  * The HTTP Methods for the AddEndPoint() method
  */
-export type HTTPMethods = 'get' | 'post' | 'put' | 'delete' | 'patch'
+export type HTTPMethods = 'get' | 'post' | 'put' | 'delete' | 'patch';
 
 /**
  * The default callback function for an endpoint
  */
 
-export type EndpointCallback = (req: Request, res: Response) => void
+export type EndpointCallback = (req: Request, res: Response) => void;
 
 /**
  * The Middleware callback function for creating a middleware
  */
-export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void
+export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
 
 /**
  * The param callback function for AddParamChecker()
  */
 
-export type ParameterCallback = (req: Request, res: Response, next: NextFunction, value: number | string) => void
+export type ParameterCallback = (req: Request, res: Response, next: NextFunction, value: number | string) => void;
 
 /**
  * Whether to apply default middlewares or not type
  */
 
-export type DefaultMiddlewares = "true" | "false"
-
+export type DefaultMiddlewares = 'true' | 'false';
 
 export class APIController {
     /**
@@ -43,7 +42,7 @@ export class APIController {
      * The API Server PORT. Default: 51337
      */
 
-    public port: number
+    public port: number;
 
     /**
      * A map containing all endpoints of this API
@@ -69,12 +68,11 @@ export class APIController {
 
     public MiddleWares: any;
 
-
     /**
      * A Map containing all parameters checker functions for this API
      */
 
-    public parameters: any
+    public parameters: any;
 
     /**
      * Initialzes the APIController Class
@@ -89,7 +87,7 @@ export class APIController {
         this.router = express.Router();
         this.MiddleWares = new Map();
         this.parameters = new Map();
-        this.port = 51337
+        this.port = 51337;
     }
 
     /**
@@ -101,7 +99,6 @@ export class APIController {
         this.RegisterAllMiddleWares();
         this.app.use(this.mainEndPoint, this.router);
     }
-
 
     /**
      * Applies the default Middlewares
@@ -134,11 +131,7 @@ export class APIController {
      *
      */
 
-    AddEndPoint(
-        endpoint: string,
-        method: HTTPMethods,
-        callback: EndpointCallback
-    ) {
+    AddEndPoint(endpoint: string, method: HTTPMethods, callback: EndpointCallback) {
         this.endpoints.set(endpoint, callback);
         this.router.route(endpoint)[method](callback);
     }
@@ -166,7 +159,7 @@ export class APIController {
      * }
      *
      *  // The "post" method here can have also multiple callback functions just like express allows
-     * 
+     *
      * api.AddMultipleMethods("/random", ["get", "post"], [getUsers, [checkBody, postUser]]) // now the random endpoint will have the post and get methods and each has its own callback function
      *
      * api.startServer("true")
@@ -177,8 +170,8 @@ export class APIController {
     AddMultipleMethods(endpoint: string, method: string[], callback: Function[]) {
         this.endpoints.set(endpoint, callback);
         method.forEach((method, index) => {
-            if (typeof method !== "string" && Array.isArray(method)) {
-                this.AddMultipleMethods(endpoint, method, callback)
+            if (typeof method !== 'string' && Array.isArray(method)) {
+                this.AddMultipleMethods(endpoint, method, callback);
             }
             const f = callback[index];
             this.router.route(endpoint)[method](f);
@@ -214,29 +207,28 @@ export class APIController {
         this.MiddleWares.set(middlewareId, callback);
     }
 
-
     /**
      * Map the given param placeholder name(s) to the given callback(s).
      * @param {string} param the parameter to write a condition for
-     * @param {Function} callback the callback function for this paramter 
-     * 
+     * @param {Function} callback the callback function for this paramter
+     *
      * Example:
-     * 
+     *
      * ```ts
-     * 
+     *
      *  const api = new APIController('/api/v1');
-     * 
+     *
      * api.AddEndPoint('/:id', 'get', (req, res) => {
      *   res.status(200).json({ data: 'none', status: 'ok' });
      * });
-     * 
+     *
      * api.AddParamChecker('id', (req, res, next, value) => {
      *  if (value > 10) {
      *    res.status(404).json({ status: 'not allowed' });
      *  }
      *   next();
      * });
-     * 
+     *
      * ```
      */
 
@@ -253,7 +245,6 @@ export class APIController {
             this.app.use(callback);
         }
     }
-
 
     /**
      * Registers all parameter checkers for this router

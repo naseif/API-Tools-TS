@@ -1,1 +1,1 @@
-export * from "./controllers/apiController"
+export * from './controllers/apiController';
