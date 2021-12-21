@@ -42,6 +42,12 @@ export class APIController {
 
 
     /**
+     * A Map containing all parameters checker functions for this API
+     */
+
+    public parameters: any
+
+    /**
      * Initialzes the APIController Class
      * @param {string} endpoint
      */
@@ -53,6 +59,7 @@ export class APIController {
         this.app = express();
         this.router = express.Router();
         this.MiddleWares = new Map();
+        this.parameters = new Map();
         this.port = 51337
     }
 
@@ -60,13 +67,21 @@ export class APIController {
      * Adds some middlewares for the API Security
      */
 
-    private CreateMainEndPoint() {
-        this.MiddleWares.set('morgan', morgan('short'));
-        this.MiddleWares.set('helmet', helmet());
-        this.MiddleWares.set('cors', cors());
+    private createMainEndPoint() {
         this.app.use(express.json());
         this.RegisterAllMiddleWares();
         this.app.use(this.mainEndPoint, this.router);
+    }
+
+
+    /**
+     * Applies the default Middlewares
+     */
+
+    private applyDefaultMiddleWares() {
+        this.MiddleWares.set('morgan', morgan('short'));
+        this.MiddleWares.set('helmet', helmet());
+        this.MiddleWares.set('cors', cors());
     }
 
     /**
@@ -121,7 +136,9 @@ export class APIController {
      *    res.status(200).json({method: "POST"})
      * }
      *
-     * api.AddMultipleMethods("/random", ["get", "post"], [getUsers, postUser]) // now the random endpoint will have the post and get methods and each has its own callback function
+     *  // The "post" method here can have also multiple callback functions just like express allows
+     * 
+     * api.AddMultipleMethods("/random", ["get", "post"], [getUsers, [checkBody, postUser]]) // now the random endpoint will have the post and get methods and each has its own callback function
      *
      * api.startServer("true")
      *
@@ -168,6 +185,36 @@ export class APIController {
         this.MiddleWares.set(middlewareId, callback);
     }
 
+
+    /**
+     * Map the given param placeholder name(s) to the given callback(s).
+     * @param {string} param the parameter to write a condition for
+     * @param {Function} callback the callback function for this paramter 
+     * 
+     * Example:
+     * 
+     * ```ts
+     * 
+     *  const api = new APIController('/api/v1');
+     * 
+     * api.AddEndPoint('/:id', 'get', (req, res) => {
+     *   res.status(200).json({ data: 'none', status: 'ok' });
+     * });
+     * 
+     * api.AddParamChecker('id', (req, res, next, value) => {
+     *  if (value > 10) {
+     *    res.status(404).json({ status: 'not allowed' });
+     *  }
+     *   next();
+     * });
+     * 
+     * ```
+     */
+
+    AddParamChecker(param: string, callback: (req: Request, res: Response, next: NextFunction, val: any) => void) {
+        this.parameters.set(param, callback);
+    }
+
     /**
      * Registers all Middlewares in the Express app.
      */
@@ -175,6 +222,17 @@ export class APIController {
     private RegisterAllMiddleWares() {
         for (const [middleware, callback] of this.MiddleWares.entries()) {
             this.app.use(callback);
+        }
+    }
+
+
+    /**
+     * Registers all parameter checkers for this router
+     */
+
+    private registerAllParamCheckers() {
+        for (const [param, callback] of this.parameters.entries()) {
+            this.router.param(param, callback);
         }
     }
 
@@ -186,14 +244,17 @@ export class APIController {
 
     startServer(applyDefaultMiddleWares?: { useDefaultMiddlewares: 'true' | 'false' }) {
         if (applyDefaultMiddleWares && applyDefaultMiddleWares.useDefaultMiddlewares === 'true') {
-            this.CreateMainEndPoint();
+            this.applyDefaultMiddleWares();
+            this.registerAllParamCheckers();
+            this.createMainEndPoint();
         } else {
             this.RegisterAllMiddleWares();
             this.app.use(express.json());
+            this.registerAllParamCheckers();
             this.app.use(this.mainEndPoint, this.router);
         }
         this.app.listen(this.port, () => {
-            console.log(`API is running on https://localhost:${this.port}${this.mainEndPoint}`);
+            console.log(`API is running on http://localhost:${this.port}${this.mainEndPoint}`);
         });
     }
 }
