@@ -3,6 +3,13 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 
+type HTTPMethods = 'get' | 'post' | 'put' | 'delete' | 'patch'
+type EndpointCallback = (req: Request, res: Response) => void
+type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void
+type ParameterCallback = (req: Request, res: Response, next: NextFunction, value: number | string) => void
+type DefaultMiddlewares = "true" | "false"
+
+
 export class APIController {
     /**
      * the main endpoint for this API
@@ -107,8 +114,8 @@ export class APIController {
 
     AddEndPoint(
         endpoint: string,
-        method: 'get' | 'post' | 'put' | 'delete' | 'patch',
-        callback: (req: Request, res: Response) => void
+        method: HTTPMethods,
+        callback: EndpointCallback
     ) {
         this.endpoints.set(endpoint, callback);
         this.router.route(endpoint)[method](callback);
@@ -118,7 +125,7 @@ export class APIController {
      * Adds multiple methods to a single endpoint.
      * @param {string} endpoint the API endpoint
      * @param {array} method e.g: ["get", "post"]
-     * @param {array} callback e.g [getUsers, postUser]
+     * @param {Function[]} callback e.g [getUsers, postUser]
      *
      * The callback functions for the methods should be put in the array in order to grant each method its right callback function
      *
@@ -145,7 +152,7 @@ export class APIController {
      * ```
      */
 
-    AddMultipleMethods(endpoint: string, method: string[], callback: any[]) {
+    AddMultipleMethods(endpoint: string, method: string[], callback: Function[]) {
         this.endpoints.set(endpoint, callback);
         method.forEach((method, index) => {
             if (typeof method !== "string" && Array.isArray(method)) {
@@ -159,7 +166,7 @@ export class APIController {
     /**
      * Adds a Middleware to the API that will apply to each request made to this endpoint
      * @param {string} middlewareId Just a name for this middleware
-     * @param {callback} callback A callback function
+     * @param {Function} callback A callback function
      *
      * Example:
      *  ```ts
@@ -181,7 +188,7 @@ export class APIController {
      *
      */
 
-    AddMiddleWare(middlewareId: string, callback: (req: Request, res: Response, next: NextFunction) => void) {
+    AddMiddleWare(middlewareId: string, callback: MiddleWareCallback) {
         this.MiddleWares.set(middlewareId, callback);
     }
 
@@ -211,7 +218,7 @@ export class APIController {
      * ```
      */
 
-    AddParamChecker(param: string, callback: (req: Request, res: Response, next: NextFunction, val: any) => void) {
+    AddParamChecker(param: string, callback: ParameterCallback) {
         this.parameters.set(param, callback);
     }
 
@@ -242,7 +249,7 @@ export class APIController {
      * This parameter is optional. use startServer("true") || startServer("false") to enable or disable the default middlewares
      */
 
-    startServer(applyDefaultMiddleWares?: { useDefaultMiddlewares: 'true' | 'false' }) {
+    startServer(applyDefaultMiddleWares?: { useDefaultMiddlewares: DefaultMiddlewares }) {
         if (applyDefaultMiddleWares && applyDefaultMiddleWares.useDefaultMiddlewares === 'true') {
             this.applyDefaultMiddleWares();
             this.registerAllParamCheckers();
