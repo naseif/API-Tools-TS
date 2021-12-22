@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
+import { ControllerErrors, Errors } from '../Utils/ControllerErrors';
 
 /**
  * The HTTP Methods for the AddEndPoint() method
@@ -80,7 +81,7 @@ export class APIController {
      */
 
     constructor(endpoint: string) {
-        if (!endpoint) throw new Error('APIController can not be initialized without a main endoint!');
+        if (!endpoint) throw new ControllerErrors('APIController can not be initialized without a main endpoint!', Errors.CLASS_INITIALIZATION_ERROR);
         this.mainEndPoint = endpoint;
         this.endpoints = new Map();
         this.app = express();
@@ -132,6 +133,9 @@ export class APIController {
      */
 
     AddEndPoint(endpoint: string, method: HTTPMethods, callback: EndpointCallback) {
+        if (!endpoint) throw new ControllerErrors("You did not provide a valid endpoint!", Errors.ENDPOITN_ERROR)
+        if (!method) throw new ControllerErrors("You did not provide a valid HTTP Method for this endpoint!", Errors.METHOD_ERROR)
+        if (!callback || typeof callback !== "function") throw new ControllerErrors("The Callback function is either missing or is from type string.", Errors.CALLBACK_ERROR)
         this.endpoints.set(endpoint, callback);
         this.router.route(endpoint)[method](callback);
     }
@@ -168,6 +172,9 @@ export class APIController {
      */
 
     AddMultipleMethods(endpoint: string, method: string[], callback: Function[]) {
+        if (!endpoint) throw new ControllerErrors("You did not provide a valid endpoint!", Errors.ENDPOITN_ERROR)
+        if (!method || typeof method !== "object") throw new ControllerErrors("The HTTP methods is not of type string. You have to provide an Array containing all HTTP Methods you want to attach.", Errors.METHOD_ERROR)
+        if (!callback || typeof callback !== "object") throw new ControllerErrors("The callback function is not from type string!", Errors.CALLBACK_ERROR)
         this.endpoints.set(endpoint, callback);
         method.forEach((method, index) => {
             if (typeof method !== 'string' && Array.isArray(method)) {
@@ -204,6 +211,8 @@ export class APIController {
      */
 
     AddMiddleWare(middlewareId: string, callback: MiddleWareCallback) {
+        if (!middlewareId || typeof middlewareId !== "string" ) throw new ControllerErrors("You did not provide a valid Middleware name. The Middleware name is from type string", Errors.MIDDLEWARE_ERROR)
+        if (!callback || typeof callback !== "function") throw new ControllerErrors("The Callback function for this Middleware is missing or is from type string.", Errors.CALLBACK_ERROR)
         this.MiddleWares.set(middlewareId, callback);
     }
 
@@ -233,6 +242,8 @@ export class APIController {
      */
 
     AddParamChecker(param: string, callback: ParameterCallback) {
+        if (!param || typeof param !== "string" ) throw new ControllerErrors("The param name is either missing or is not from type string!", Errors.PARAMETER_ERROR)
+        if (!callback || typeof callback !== "function") throw new ControllerErrors("The Callback function for this ParamChecker is missing or is from type string.", Errors.CALLBACK_ERROR)
         this.parameters.set(param, callback);
     }
 
