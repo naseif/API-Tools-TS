@@ -1,20 +1,18 @@
 /**
- * The Error Codes for the ControllerErros Class 
+ * The Error Codes for the ControllerErros Class
  */
 
 export enum Errors {
-    CLASS_INITIALIZATION_ERROR = "InitializationError",
-    CONTROLLER_ERROR = "ControllerError",
-    ENDPOITN_ERROR = "EndpointError",
-    METHOD_ERROR = "MethodError",
-    CALLBACK_ERROR = "CallbackFunctionError",
-    MIDDLEWARE_ERROR = "MiddleWareError",
-    PARAMETER_ERROR = "ParameterError"
+    CLASS_INITIALIZATION_ERROR = 'InitializationError',
+    CONTROLLER_ERROR = 'ControllerError',
+    ENDPOITN_ERROR = 'EndpointError',
+    METHOD_ERROR = 'MethodError',
+    CALLBACK_ERROR = 'CallbackFunctionError',
+    MIDDLEWARE_ERROR = 'MiddleWareError',
+    PARAMETER_ERROR = 'ParameterError'
 }
 
-
 export class ControllerErrors extends Error {
-
     /**
      * The error message
      */
@@ -31,7 +29,6 @@ export class ControllerErrors extends Error {
         super();
         this.message = `${code} - ${message}`;
         this.errorCode = code;
-        Error.captureStackTrace(this)
+        Error.captureStackTrace(this);
     }
 }
-
