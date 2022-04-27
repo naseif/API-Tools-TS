@@ -6,9 +6,8 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "build": "tsc",
-    "build:docs": "npx typedoc src/index.ts",
-    "publish:check": "tsc --build --clean && tsc --build --verbose"
+    "build:lib": "npx tsup",
+    "build:docs": "npx typedoc src/index.ts"
   },
   "author": "naseif",
   "license": "MIT",
@@ -27,6 +26,7 @@
     "@types/node": "^16.11.14",
     "prettier": "^2.5.1",
     "tslint": "^6.1.3",
+    "tsup": "^5.12.6",
     "typescript": "^4.5.4"
   },
   "dependencies": {
