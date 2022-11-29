@@ -76,6 +76,11 @@ export class APIController {
     public parameters: Map<string, ParameterCallback>;
 
     /**
+     * Bind the API to a different IP Address
+     */
+    public hostname: string
+
+    /**
      * Initialzes the APIController Class
      * @param {string} endpoint
      */
@@ -93,6 +98,7 @@ export class APIController {
         this.MiddleWares = new Map();
         this.parameters = new Map();
         this.port = 51337;
+        this.hostname = "localhost"
     }
 
     /**
@@ -317,7 +323,7 @@ export class APIController {
             this.registerAllParamCheckers();
             this.app.use(this.mainEndPoint, this.router);
         }
-        this.app.listen(this.port, () => {
+        this.app.listen(this.port, this.hostname, () => {
             console.log(`API is running on http://localhost:${this.port}${this.mainEndPoint}`);
         });
     }
