@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { Server } from 'http';
 import { Socket } from 'net';
-import { ControllerErrors, Errors } from '../utils/ControllerErrors';
+import { ControllerErrors, Errors } from '../utils';
 import {
     EndpointCallback,
     ParameterCallback,
