@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
     "scripts": {
-        "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+        "prettier-format": "prettier --config .prettierrc src/**/*.ts --write",
         "build:lib": "npx tsup",
         "build:docs": "npx typedoc src/index.ts"
     },
